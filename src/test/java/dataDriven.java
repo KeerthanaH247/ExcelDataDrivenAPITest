@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class dataDriven {
 	// 1. Identify Testcase column by scanning the entire row.
@@ -47,7 +49,14 @@ public class dataDriven {
 						// 3. After we grab purchase testcase row, pull all the data of that row and feed it into test.
 						Iterator<Cell> cv = r.cellIterator();
 						while (cv.hasNext()) {
-						a.add(cv.next().getStringCellValue());
+						Cell c	=cv.next();
+						if(c.getCellType()==CellType.STRING)
+						{
+						a.add(c.getStringCellValue());
+						}
+						else {
+						a.add(	NumberToTextConverter.toText(c.getNumericCellValue()));
+							}
 						}
 					}
 				}
@@ -55,10 +64,4 @@ public class dataDriven {
 		}
 		return a;
 	}
-		public static void main(String[] args) throws IOException {
-			
-		}
-		
-	
-
 }
