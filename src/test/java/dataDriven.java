@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,7 +14,9 @@ public class dataDriven {
 	// purchase testcase.
 	// 3. After we grab purchase testcase row, pull all the data of that row and
 	// feed it into test.
-	public static void main(String[] args) throws IOException {
+	public ArrayList<String> getData(String testcaseName) throws IOException 
+	{
+		ArrayList<String> a=new ArrayList<>(); 
 		FileInputStream fis = new FileInputStream("C://Users//Spoorthi//Documents//DemoDataAPI.xlsx");
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 		int sheets = workbook.getNumberOfSheets();
@@ -40,17 +43,22 @@ public class dataDriven {
 				// purchase testcase.
 				while (rows.hasNext()) {
 					Row r = rows.next();
-					if (r.getCell(coloumn).getStringCellValue().equalsIgnoreCase("Purchase")) {
+					if (r.getCell(coloumn).getStringCellValue().equalsIgnoreCase(testcaseName)) {
 						// 3. After we grab purchase testcase row, pull all the data of that row and feed it into test.
-						System.out.println("Entered if condition");
 						Iterator<Cell> cv = r.cellIterator();
 						while (cv.hasNext()) {
-							System.out.println(cv.next().getStringCellValue());
+						a.add(cv.next().getStringCellValue());
 						}
 					}
 				}
 			}
 		}
+		return a;
 	}
+		public static void main(String[] args) throws IOException {
+			
+		}
+		
+	
 
 }
