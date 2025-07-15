@@ -1,27 +1,55 @@
 import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.util.Iterator;
-
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class dataDriven {
-	//1. Identify Testcase column by scanning the entire row.
-	//2. Once column is identified then scan entire test cases column to identify purchase testcase.
-	//3. After we grab purchase testcase row, pull all the data of that row and feed it into test. 
+	// 1. Identify Testcase column by scanning the entire row.
+	// 2. Once column is identified then scan entire test cases column to identify
+	// purchase testcase.
+	// 3. After we grab purchase testcase row, pull all the data of that row and
+	// feed it into test.
 	public static void main(String[] args) throws IOException {
-		FileInputStream fis=new FileInputStream("C:\\Users\\Spoorthi\\Documents\\DemoDataAPI");
-		XSSFWorkbook workbook=new XSSFWorkbook(fis);
+		FileInputStream fis = new FileInputStream("C://Users//Spoorthi//Documents//DemoDataAPI.xlsx");
+		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 		int sheets = workbook.getNumberOfSheets();
-		for(int i=0; i<sheets;i++)
-		{
-			if(workbook.getSheetName(i).equalsIgnoreCase("TestData"))
-			{
-				XSSFSheet sheet = workbook.getSheetAt(i);			}
-			//1. Identify Testcase column by scanning the entire row.
-			Iterator<Row> rows=sheet.iterator();
-			rows.next();
+		for (int i = 0; i < sheets; i++) {
+			if (workbook.getSheetName(i).equalsIgnoreCase("TestData")) {
+				XSSFSheet sheet = workbook.getSheetAt(i);
+				// 1. Identify Testcase column by scanning the entire row.
+				Iterator<Row> rows = sheet.iterator(); // sheet is collection of rows
+				Row firstRow = rows.next();
+				Iterator<Cell> ce = firstRow.cellIterator(); // row is collection of cells
+				int k = 0;
+				int coloumn = 0;
+				while (ce.hasNext()) {
+					Cell value = ce.next();
+					if (value.getStringCellValue().equalsIgnoreCase("Testcases")) {
+						// Desired column
+						coloumn = k;
+					}
+					k++;
+				}
+				System.out.println(coloumn);
+
+				// 2. Once column is identified then scan entire test cases column to identify
+				// purchase testcase.
+				while (rows.hasNext()) {
+					Row r = rows.next();
+					if (r.getCell(coloumn).getStringCellValue().equalsIgnoreCase("Purchase")) {
+						// 3. After we grab purchase testcase row, pull all the data of that row and feed it into test.
+						System.out.println("Entered if condition");
+						Iterator<Cell> cv = r.cellIterator();
+						while (cv.hasNext()) {
+							System.out.println(cv.next().getStringCellValue());
+						}
+					}
+				}
+			}
 		}
 	}
 
